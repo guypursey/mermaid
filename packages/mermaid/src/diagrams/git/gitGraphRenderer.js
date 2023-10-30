@@ -417,6 +417,8 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
 
   let pathStart = `M ${p1.x} ${p1.y}`;
   let pathEnd = `L ${p2.x} ${p2.y}`;
+  let lineStraight;
+  let lineCurve;
 
   if (arrowNeedsRerouting) {
     arc = 'A 10 10, 0, 0, 0,';
@@ -468,15 +470,15 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
       if (p1.x < p2.x) {
         // Figure out the color of the arrow,arrows going down take the color from the destination branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineDef = `${pathStart} L ${p2.x - radius} ${p1.y} ${arc} ${p2.x} ${
-          p1.y + offset
-        } ${pathEnd}`;
+        lineStraight = `L ${p2.x - radius} ${p1.y}`;
+        lineCurve = `${arc} ${p2.x} ${p1.y + offset}`;
+        lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else if (p1.x > p2.x) {
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x - offset} ${
-          p2.y
-        } ${pathEnd}`;
+        lineStraight = `L ${p1.x} ${p2.y - radius}`;
+        lineCurve = `${arc} ${p1.x - offset} ${p2.y}`;
+        lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `${pathStart} L ${p1.x} ${p1.y} ${p1.x} ${p2.y} ${pathEnd}`;
@@ -488,15 +490,15 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
       if (p1.y < p2.y) {
         // Arrows going up take the color from the target branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x + offset} ${
-          p2.y
-        } ${pathEnd}`;
+        lineStraight = `L ${p1.x} ${p2.y - radius}`;
+        lineCurve = `${arc} ${p1.x + offset} ${p2.y}`;
+        lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else if (p1.y > p2.y) {
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p2.x - radius} ${p1.y} ${arc} ${p2.x} ${
-          p1.y - offset
-        } ${pathEnd}`;
+        lineStraight = `L ${p2.x - radius} ${p1.y}`;
+        lineCurve = `${arc} ${p2.x} ${p1.y - offset}`;
+        lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `${pathStart} L ${p1.x} ${p2.y} ${p1.x} ${p2.y} ${pathEnd}`;
