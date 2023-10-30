@@ -401,24 +401,22 @@ const findLane = (y1, y2, depth = 0) => {
  * @param {any} allCommits
  */
 const drawArrow = (svg, commitA, commitB, allCommits) => {
-  const p1 = commitPos[commitA.id]; // arrowStart
-  const p2 = commitPos[commitB.id]; // arrowEnd
+  const p1 = commitPos[commitA.id]; // start coords
+  const p2 = commitPos[commitB.id]; // end coords
   const arrowNeedsRerouting = shouldRerouteArrow(commitA, commitB, p1, p2, allCommits);
   // log.debug('drawArrow', p1, p2, arrowNeedsRerouting, commitA.id, commitB.id);
 
   // Lower-right quadrant logic; top-left is 0,0
-
+  const pathStart = `M ${p1.x} ${p1.y}`;
+  const pathEnd = `L ${p2.x} ${p2.y}`;
   let arc = '';
   let arc2 = '';
   let radius = 0;
   let offset = 0;
-  let colorClassNum = branchPos[commitB.branch].index;
-  let lineDef;
-
-  let pathStart = `M ${p1.x} ${p1.y}`;
-  let pathEnd = `L ${p2.x} ${p2.y}`;
-  let lineStraight;
-  let lineCurve;
+  let colorClassNum = '';
+  let lineStraight = '';
+  let lineCurve = '';
+  let lineDef = '';
 
   if (arrowNeedsRerouting) {
     arc = 'A 10 10, 0, 0, 0,';
