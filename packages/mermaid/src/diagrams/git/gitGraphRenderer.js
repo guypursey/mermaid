@@ -470,8 +470,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `M ${p1.x} ${p1.y} L ${p2.x - radius} ${p1.y} ${arc2} ${p2.x} ${
           p1.y + offset
         } L ${p2.x} ${p2.y}`;
-      }
-      if (p1.x > p2.x) {
+      } else if (p1.x > p2.x) {
         arc = 'A 20 20, 0, 0, 0,';
         arc2 = 'A 20 20, 0, 0, 1,';
         radius = 20;
@@ -482,9 +481,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc2} ${p1.x - offset} ${
           p2.y
         } L ${p2.x} ${p2.y}`;
-      }
-
-      if (p1.x === p2.x) {
+      } else {
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x + radius} ${p1.y} ${arc} ${p1.x + offset} ${
           p2.y + radius
@@ -500,8 +497,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x + offset} ${p2.y} L ${
           p2.x
         } ${p2.y}`;
-      }
-      if (p1.y > p2.y) {
+      } else if (p1.y > p2.y) {
         arc = 'A 20 20, 0, 0, 0,';
         radius = 20;
         offset = 20;
@@ -510,9 +506,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `M ${p1.x} ${p1.y} L ${p2.x - radius} ${p1.y} ${arc} ${p2.x} ${p1.y - offset} L ${
           p2.x
         } ${p2.y}`;
-      }
-
-      if (p1.y === p2.y) {
+      } else {
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x + offset} ${p2.y} L ${
           p2.x
