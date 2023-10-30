@@ -481,7 +481,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${p1.y} ${p1.x} ${p2.y} ${pathEnd}`;
+        lineDef = `${pathStart} ${pathEnd}`;
       }
     } else {
       arc = 'A 20 20, 0, 0, 0,';
@@ -501,7 +501,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${p2.y} ${p1.x} ${p2.y} ${pathEnd}`;
+        lineDef = `${pathStart} ${pathEnd}`;
       }
     }
   }
