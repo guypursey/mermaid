@@ -458,24 +458,17 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
     }
   } else {
     if (dir === 'TB') {
+      arc = 'A 20 20, 0, 0, 0,';
+      arc2 = 'A 20 20, 0, 0, 1,';
+      radius = 20;
+      offset = 20;
       if (p1.x < p2.x) {
-        arc = 'A 20 20, 0, 0, 0,';
-        arc2 = 'A 20 20, 0, 0, 1,';
-        radius = 20;
-        offset = 20;
-
         // Figure out the color of the arrow,arrows going down take the color from the destination branch
         colorClassNum = branchPos[commitB.branch].index;
-
         lineDef = `M ${p1.x} ${p1.y} L ${p2.x - radius} ${p1.y} ${arc2} ${p2.x} ${
           p1.y + offset
         } L ${p2.x} ${p2.y}`;
       } else if (p1.x > p2.x) {
-        arc = 'A 20 20, 0, 0, 0,';
-        arc2 = 'A 20 20, 0, 0, 1,';
-        radius = 20;
-        offset = 20;
-
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc2} ${p1.x - offset} ${
@@ -483,24 +476,19 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         } L ${p2.x} ${p2.y}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `M ${p1.x} ${p1.y} L ${p1.x + radius} ${p1.y} ${arc} ${p1.x + offset} ${
-          p2.y + radius
-        } L ${p2.x} ${p2.y}`;
+        lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p1.y} ${p1.x} ${p2.y} L ${p2.x} ${p2.y}`;
       }
     } else {
+      arc = 'A 20 20, 0, 0, 0,';
+      radius = 20;
+      offset = 20;
       if (p1.y < p2.y) {
-        arc = 'A 20 20, 0, 0, 0,';
-        radius = 20;
-        offset = 20;
         // Arrows going up take the color from the target branch
         colorClassNum = branchPos[commitB.branch].index;
         lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x + offset} ${p2.y} L ${
           p2.x
         } ${p2.y}`;
       } else if (p1.y > p2.y) {
-        arc = 'A 20 20, 0, 0, 0,';
-        radius = 20;
-        offset = 20;
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `M ${p1.x} ${p1.y} L ${p2.x - radius} ${p1.y} ${arc} ${p2.x} ${p1.y - offset} L ${
@@ -508,9 +496,7 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
         } ${p2.y}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x + offset} ${p2.y} L ${
-          p2.x
-        } ${p2.y}`;
+        lineDef = `M ${p1.x} ${p1.y} L ${p1.x} ${p2.y} ${p1.x} ${p2.y} L ${p2.x} ${p2.y}`;
       }
     }
   }
