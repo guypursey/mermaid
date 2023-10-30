@@ -410,93 +410,94 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
   // Lower-right quadrant logic; top-left is 0,0
   const pathStart = `M ${p1.x} ${p1.y}`;
   const pathEnd = `L ${p2.x} ${p2.y}`;
-  let arc = '';
-  let arc2 = '';
-  let radius = 0;
-  let offset = 0;
   let colorClassNum = '';
-  let lineStraight = '';
-  let lineCurve = '';
   let lineDef = '';
 
   if (arrowNeedsRerouting) {
-    arc = 'A 10 10, 0, 0, 0,';
-    arc2 = 'A 10 10, 0, 0, 1,';
-    radius = 10;
-    offset = 10;
-
-    const lineY = p1.y < p2.y ? findLane(p1.y, p2.y) : findLane(p2.y, p1.y);
-    const lineX = p1.x < p2.x ? findLane(p1.x, p2.x) : findLane(p2.x, p1.x);
+    const arc = 'A 10 10, 0, 0, 0,';
+    const arc2 = 'A 10 10, 0, 0, 1,';
+    const radius = 10;
+    const offset = 10;
 
     if (dir === 'TB') {
+      const lineX = p1.x < p2.x ? findLane(p1.x, p2.x) : findLane(p2.x, p1.x);
       if (p1.x < p2.x) {
         // Source commit is on branch position left of destination commit
         // so render arrow rightward with colour of destination branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineDef = `${pathStart} L ${lineX - radius} ${p1.y} ${arc2} ${lineX} ${
-          p1.y + offset
-        } L ${lineX} ${p2.y - radius} ${arc} ${lineX + offset} ${p2.y} ${pathEnd}`;
+        const lineOut = `L ${lineX - radius} ${p1.y}`;
+        const lineKink1 = `${arc2} ${lineX} ${p1.y + offset}`;
+        const lineMid = `L ${lineX} ${p2.y - radius}`;
+        const lineKink2 = `${arc} ${lineX + offset} ${p2.y}`;
+        lineDef = `${pathStart} ${lineOut} ${lineKink1} ${lineMid} ${lineKink2} ${pathEnd}`;
       } else {
         // Source commit is on branch position right of destination commit
         // so render arrow leftward with colour of source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${lineX + radius} ${p1.y} ${arc} ${lineX} ${
-          p1.y + offset
-        } L ${lineX} ${p2.y - radius} ${arc2} ${lineX - offset} ${p2.y} ${pathEnd}`;
+        const lineOut1 = `L ${lineX + radius} ${p1.y}`;
+        const lineKink1 = `${arc} ${lineX} ${p1.y + offset}`;
+        const lineMid = `L ${lineX} ${p2.y - radius}`;
+        const lineKink2 = `${arc2} ${lineX - offset} ${p2.y}`;
+        lineDef = `${pathStart} ${lineOut1} ${lineKink1} ${lineMid} ${lineKink2} ${pathEnd}`;
       }
     } else {
+      const lineY = p1.y < p2.y ? findLane(p1.y, p2.y) : findLane(p2.y, p1.y);
       if (p1.y < p2.y) {
         // Source commit is on branch positioned above destination commit
         // so render arrow downward with colour of destination branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${lineY - radius} ${arc} ${p1.x + offset} ${lineY} L ${
-          p2.x - radius
-        } ${lineY} ${arc2} ${p2.x} ${lineY + offset} ${pathEnd}`;
+        const lineOut = `L ${p1.x} ${lineY - radius}`;
+        const lineKink1 = `${arc} ${p1.x + offset} ${lineY}`;
+        const lineMid = `L ${p2.x - radius} ${lineY}`;
+        const lineKink2 = `${arc2} ${p2.x} ${lineY + offset}`;
+        lineDef = `${pathStart} ${lineOut} ${lineKink1} ${lineMid} ${lineKink2} ${pathEnd}`;
       } else {
         // Source commit is on branch positioned below destination commit
         // so render arrow upward with colour of source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${lineY + radius} ${arc2} ${p1.x + offset} ${lineY} L ${
-          p2.x - radius
-        } ${lineY} ${arc} ${p2.x} ${lineY - offset} ${pathEnd}`;
+        const lineOut = `L ${p1.x} ${lineY + radius}`;
+        const lineKink1 = `${arc2} ${p1.x + offset} ${lineY}`;
+        const lineMid = `L ${p2.x - radius} ${lineY}`;
+        const lineKink2 = `${arc} ${p2.x} ${lineY - offset}`;
+        lineDef = `${pathStart} ${lineOut} ${lineKink1} ${lineMid} ${lineKink2} ${pathEnd}`;
       }
     }
   } else {
     if (dir === 'TB') {
-      arc = 'A 20 20, 0, 0, 1,';
-      radius = 20;
-      offset = 20;
+      const arc = 'A 20 20, 0, 0, 1,';
+      const radius = 20;
+      const offset = 20;
       if (p1.x < p2.x) {
-        // Figure out the color of the arrow,arrows going down take the color from the destination branch
+        // Arrows going down take the color from the destination branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineStraight = `L ${p2.x - radius} ${p1.y}`;
-        lineCurve = `${arc} ${p2.x} ${p1.y + offset}`;
+        const lineStraight = `L ${p2.x - radius} ${p1.y}`;
+        const lineCurve = `${arc} ${p2.x} ${p1.y + offset}`;
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else if (p1.x > p2.x) {
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineStraight = `L ${p1.x} ${p2.y - radius}`;
-        lineCurve = `${arc} ${p1.x - offset} ${p2.y}`;
+        const lineStraight = `L ${p1.x} ${p2.y - radius}`;
+        const lineCurve = `${arc} ${p1.x - offset} ${p2.y}`;
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
         lineDef = `${pathStart} ${pathEnd}`;
       }
     } else {
-      arc = 'A 20 20, 0, 0, 0,';
-      radius = 20;
-      offset = 20;
+      const arc = 'A 20 20, 0, 0, 0,';
+      const radius = 20;
+      const offset = 20;
       if (p1.y < p2.y) {
         // Arrows going up take the color from the target branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineStraight = `L ${p1.x} ${p2.y - radius}`;
-        lineCurve = `${arc} ${p1.x + offset} ${p2.y}`;
+        const lineStraight = `L ${p1.x} ${p2.y - radius}`;
+        const lineCurve = `${arc} ${p1.x + offset} ${p2.y}`;
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else if (p1.y > p2.y) {
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineStraight = `L ${p2.x - radius} ${p1.y}`;
-        lineCurve = `${arc} ${p2.x} ${p1.y - offset}`;
+        const lineStraight = `L ${p2.x - radius} ${p1.y}`;
+        const lineCurve = `${arc} ${p2.x} ${p1.y - offset}`;
         lineDef = `${pathStart} ${lineStraight} ${lineCurve} ${pathEnd}`;
       } else {
         colorClassNum = branchPos[commitA.branch].index;
