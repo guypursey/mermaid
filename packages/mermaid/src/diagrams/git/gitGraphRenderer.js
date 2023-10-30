@@ -462,20 +462,19 @@ const drawArrow = (svg, commitA, commitB, allCommits) => {
     }
   } else {
     if (dir === 'TB') {
-      arc = 'A 20 20, 0, 0, 0,';
-      arc2 = 'A 20 20, 0, 0, 1,';
+      arc = 'A 20 20, 0, 0, 1,';
       radius = 20;
       offset = 20;
       if (p1.x < p2.x) {
         // Figure out the color of the arrow,arrows going down take the color from the destination branch
         colorClassNum = branchPos[commitB.branch].index;
-        lineDef = `${pathStart} L ${p2.x - radius} ${p1.y} ${arc2} ${p2.x} ${
+        lineDef = `${pathStart} L ${p2.x - radius} ${p1.y} ${arc} ${p2.x} ${
           p1.y + offset
         } ${pathEnd}`;
       } else if (p1.x > p2.x) {
         // Arrows going up take the color from the source branch
         colorClassNum = branchPos[commitA.branch].index;
-        lineDef = `${pathStart} L ${p1.x} ${p2.y - radius} ${arc2} ${p1.x - offset} ${
+        lineDef = `${pathStart} L ${p1.x} ${p2.y - radius} ${arc} ${p1.x - offset} ${
           p2.y
         } ${pathEnd}`;
       } else {
